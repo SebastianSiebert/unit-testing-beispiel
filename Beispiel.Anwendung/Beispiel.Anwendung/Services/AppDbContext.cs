@@ -15,9 +15,11 @@ public class AppDbContext : DbContext, IDbContext
   
   public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
+  public IQueryable<TEntity> SetQueryable<TEntity>() where TEntity : class => Set<TEntity>().AsNoTracking();
+
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
-  var valueComparer = new ValueComparer<List<string>>(
+    var valueComparer = new ValueComparer<List<string>>(
       (c1, c2) => c1.SequenceEqual(c2),
       c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
       c => c.ToList());
