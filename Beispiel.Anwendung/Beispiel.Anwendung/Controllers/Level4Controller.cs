@@ -23,7 +23,7 @@ public class Level4Controller : ControllerBase
   public async Task<IActionResult> GetAsync()
   {
     var query = await _dbContext.Set<Level4Model>()
-      //.Select(_contractMapper.Map())
+      .Select(_contractMapper.Map())
       .ToListAsync();
 
     return Ok(query);

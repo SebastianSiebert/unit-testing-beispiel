@@ -17,6 +17,9 @@ public class Level4ToContractMapper : IExpressionMapper<Level4Model, Level4Contr
       Level2Property = model.Level2.Level2Property,
       Level3Property = model.Level3.Level3Property,
       Level4Property = model.Level4Property,
+      IsCondition = model.Level2.IsCondition,
+      Number = model.Level3.Number,
+      ListProperty = model.ListProperty,
       Status = model.Status
     };
 }
