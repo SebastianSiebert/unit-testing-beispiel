@@ -11,7 +11,6 @@ public class UnitTest1
     Assert.True(true);
   }
 
-
   [Fact(Skip = "Test für AutoFixture")]
   public void Test()
   {
