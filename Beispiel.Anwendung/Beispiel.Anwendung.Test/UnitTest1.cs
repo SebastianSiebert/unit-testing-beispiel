@@ -10,15 +10,23 @@ public class UnitTest1
   {
     Assert.True(true);
   }
-
-
-  [Fact(Skip = "Test für AutoFixture")]
+  
+  [Fact]
   public void Test()
   {
+    // Arrange
+    const string description = "Description";
+    
     var fixture = new Fixture();
+    fixture.Customize<Level4Model>(e =>
+        e.Without(p => p.Level2).With(p => p.Description, description));
+    
     var model = fixture.Create<Level4Model>();
     
+    // Act
     
+    // Assert
+    Assert.Equal(description, model.Description);
     Assert.Null(model.Level2);
   }
 }
