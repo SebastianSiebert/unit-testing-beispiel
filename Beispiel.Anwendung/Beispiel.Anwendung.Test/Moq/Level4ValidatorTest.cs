@@ -1,10 +1,9 @@
-﻿
-using Beispiel.Anwendung.Interfaces;
+﻿using Beispiel.Anwendung.Interfaces;
 using Beispiel.Anwendung.Model;
 using Beispiel.Anwendung.Services;
 using FluentValidation.TestHelper;
 
-namespace Beispiel.Anwendung.Test;
+namespace Beispiel.Anwendung.Test.Moq;
 
 public class Level4ValidatorTest
 {

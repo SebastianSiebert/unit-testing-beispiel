@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoMoq;
 
-namespace Beispiel.Anwendung.Test;
+namespace Beispiel.Anwendung.Test.Moq;
 
 public class AutoMoqDataAttribute : AutoDataAttribute
 {
