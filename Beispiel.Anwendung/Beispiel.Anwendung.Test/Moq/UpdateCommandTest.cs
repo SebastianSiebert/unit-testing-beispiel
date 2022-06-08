@@ -1,93 +1,54 @@
 using Beispiel.Anwendung.Contract;
-using Beispiel.Anwendung.Interfaces;
 using Beispiel.Anwendung.Model;
 using Beispiel.Anwendung.Services;
-using Beispiel.Anwendung.Util;
-using FluentValidation;
-using FluentValidation.Results;
 
 namespace Beispiel.Anwendung.Test.Moq;
 
+// Aufgabe 5
 public class UpdateCommandTest
 {
-  [Theory, AutoMoqData]
+  [Theory(Skip = "Schreibe prüfung"), AutoMoqData]
   public async Task UpdateAsync_ContractIsNull_ShouldThrowException(UpdateCommand<Level4Contract, Level4Model> sut, Guid id)
   {
-    // Split
-    var act = () => sut.UpdateAsync(id, null);
-    await Assert.ThrowsAsync<ArgumentNullException>("contract", act);
-
-    // Single line
-    await Assert.ThrowsAsync<ArgumentNullException>("contract", () => sut.UpdateAsync(id, null));
+    // ToDo Prüfe das ArgumentNullException geschmissen wird
+    // Tipp Assert.ThrowsAsync<>
   }
 
   [Theory, AutoMoqData]
-  public async Task UpdateAsync_EntityNotFound_ShouldThrowException(
-    [Frozen] Mock<ITranslation> translationMock,
-    [Frozen] Mock<IDbContext> dbContextMock,
-    UpdateCommand<Level4Contract, Level4Model> sut, 
-    Guid id,
-    Level4Contract contract,
-    string errorMessage)
+  public async Task UpdateAsync_EntityNotFound_ShouldThrowException()
   {
+    // ToDo Prüfe das wenn kein Model in der DB gefunden wird, eine EntityNotFoundException mit richtiger Nachricht geschmissen wird
     // Arrange
-    dbContextMock.Setup(e => e.Set<Level4Model>().FindAsync(It.IsAny<object[]>())).ReturnsAsync((Level4Model) null);
-    translationMock.Setup(e => e.EntityNotFoundMessage).Returns(errorMessage);
 
     // Act
-    var result = await Assert.ThrowsAsync<EntityNotFoundException>(() => sut.UpdateAsync(id, contract));
 
     // Assert
-    Assert.Equal(errorMessage, result.Message);
   }
   
   [Theory, AutoMoqData]
-  public async Task UpdateAsync_HasValidationErrors_ShouldThrowException(
-    [Frozen] Mock<ITranslation> translationMock,
-    [Frozen] Mock<IDbContext> dbContextMock,
-    [Frozen] Mock<IValidator<Level4Model>> validatorMock,
-    UpdateCommand<Level4Contract, Level4Model> sut, 
-    Guid id,
-    Level4Contract contract,
-    Level4Model model,
-    ValidationResult validationResult,
-    string errorMessage)
+  public async Task UpdateAsync_HasValidationErrors_ShouldThrowException()
   {
+    // ToDo Prüfe das wenn die Validierung Fehlschlägt, eine ValidationFailedException mit richtiger Nachricht geschmissen wird.
+    // Prüfe dabei auch, dass SaveChangeAsync nicht aufgerufen wird
+    // Tipp ValidationResult.IsValid ist false, wenn ValidationResult.Errors (Liste) Einträge enthält
     // Arrange
-    dbContextMock.Setup(e => e.Set<Level4Model>().FindAsync(It.IsAny<object[]>())).ReturnsAsync(model);
-    translationMock.Setup(e => e.ValidationFailedMessage).Returns(errorMessage);
-    // Dies funktioniert nicht, da diese Methode eine Extension Methode ist
-    //validatorMock.Setup(e => e.ValidateAsync(It.IsAny<Level4Model>(), It.IsAny<Action<ValidationStrategy<Level4Model>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(validationResult);
-    validatorMock.SetReturnsDefault(Task.FromResult(validationResult));
 
     // Act
-    var result = await Assert.ThrowsAsync<ValidationFailedException>(() => sut.UpdateAsync(id, contract));
 
     // Assert
-    Assert.Equal(errorMessage, result.Message);
-    dbContextMock.Verify(e => e.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
   }
   
   [Theory, AutoMoqData]
-  public async Task UpdateAsync_RunsCorrectly(
-    [Frozen] Mock<IDbContext> dbContextMock,
-    [Frozen] Mock<IMapper<Level4Contract, Level4Model>> mapperMock,
-    UpdateCommand<Level4Contract, Level4Model> sut, 
-    Guid id,
-    Level4Contract contract,
-    Level4Model modelDb,
-    Level4Model modelMap)
+  public async Task UpdateAsync_RunsCorrectly()
   {
+    // ToDo Prüfe, dass die UpdateAsync Methode durchläuft, prüfe dabei folgende Bedingunge
+    // 1. Return Wert der Map Methode ist gleich den Return Wert der UpdateAsync Methode
+    // 2. Das Map mit dem richtigen Contract und Model aufgerufen wurde
+    // 3. Das SaveChangesAsync aufgerufen wurde
     // Arrange
-    dbContextMock.Setup(e => e.Set<Level4Model>().FindAsync(It.IsAny<object[]>())).ReturnsAsync(modelDb);
-    mapperMock.Setup(e => e.Map(It.IsAny<Level4Contract>(), It.IsAny<Level4Model>())).Returns(modelMap);
 
     // Act
-    var result = await sut.UpdateAsync(id, contract);
 
     // Assert
-    Assert.Equal(modelMap, result);
-    mapperMock.Verify(e => e.Map(contract, modelDb));
-    dbContextMock.Verify(e => e.SaveChangesAsync(It.IsAny<CancellationToken>()));
   }
 }

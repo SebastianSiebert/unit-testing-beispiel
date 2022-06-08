@@ -1,18 +1,16 @@
-using Beispiel.Anwendung.Interfaces;
 using Beispiel.Anwendung.Model;
 using Beispiel.Anwendung.Services;
-using MockQueryable.Moq;
-using Moq.EntityFrameworkCore;
 
 namespace Beispiel.Anwendung.Test.Moq;
 
+// Aufgabe 2
 public class LoadDataCommandTest
 {
-  [Theory, AutoMoqData]
-  public async Task LoadDataNoTracking([Frozen] Mock<IDbContext> dbContextMock, LoadDataCommand<BaseModel> sut, List<BaseModel> modelList)
+  [Theory(Skip = "Keleiguration für Mock erstellen"), AutoMoqData]
+  public async Task LoadDataNoTracking(LoadDataCommand<BaseModel> sut, List<BaseModel> modelList)
   {
     // Arrange
-    dbContextMock.Setup(e => e.SetQueryable<BaseModel>()).Returns(modelList.BuildMock());
+    // ToDo Configuriere Mock um richtige Daten zurück zu geben
 
     // Act
     var result = await sut.LoadDataNoTrackingAsync();
@@ -21,11 +19,11 @@ public class LoadDataCommandTest
     Assert.Equal(modelList.Count, result.Count);
   }
   
-  [Theory, AutoMoqData]
-  public async Task LoadData([Frozen] Mock<IDbContext> dbContextMock, LoadDataCommand<BaseModel> sut, List<BaseModel> modelList)
+  [Theory(Skip = "Keleiguration für Mock erstellen"), AutoMoqData]
+  public async Task LoadData(LoadDataCommand<BaseModel> sut, List<BaseModel> modelList)
   {
     // Arrange
-    dbContextMock.Setup(e => e.Set<BaseModel>()).ReturnsDbSet(modelList);
+    // ToDo Configuriere Mock um richtige Daten zurück zu geben
 
     // Act
     var result = await sut.LoadDataAsync();
