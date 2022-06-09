@@ -1,5 +1,4 @@
-﻿using Beispiel.Anwendung.Model;
-using Beispiel.Anwendung.Services;
+﻿using Beispiel.Anwendung.Services;
 using FluentValidation.TestHelper;
 
 namespace Beispiel.Anwendung.Test.Moq;
