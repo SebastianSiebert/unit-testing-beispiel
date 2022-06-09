@@ -1,5 +1,4 @@
 using Beispiel.Anwendung.Contract;
-using Beispiel.Anwendung.Model;
 using Beispiel.Anwendung.Services;
 
 namespace Beispiel.Anwendung.Test.Moq;
